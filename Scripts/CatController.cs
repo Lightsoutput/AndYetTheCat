@@ -15,15 +15,17 @@ public class CatController : MonoBehaviour
     // 是否在移动
     private bool isMoving;
     // 是否在地上（方便跳跃判断）
-    private bool isGround;
-    private bool isJumping;
+    public bool isGround;
     // 移动速度修改
     [SerializeField] private float moveSpeed;
-    // 跳跃力修改
-    [SerializeField] private float jumpForce;
 
     // 3.动画参数字符串
     private string isMovingStr = "isMoving";
+    private string isGroundStr = "isGround";
+
+    // 4.获取到人物
+    public GameObject player;
+    [SerializeField] private PlayerController pcl;
 
     void Start()
     {
@@ -32,13 +34,13 @@ public class CatController : MonoBehaviour
         catRB = cat.GetComponent<Rigidbody2D>();
         catCld = cat.GetComponent<BoxCollider2D>();
         catAnim = cat.GetComponent<Animator>();
-        // 速度、跳跃力度初始化
+        // 速度初始化
         moveSpeed = 5f;
-        jumpForce = 700f;
         // 状态初始化
         isMoving = false;
         isGround = true;
-        isJumping = false;
+        // 获取人物
+        player = GameObject.Find("player");
     }
 
     void Update()
@@ -48,7 +50,6 @@ public class CatController : MonoBehaviour
         GroundRayCast();
         CatJump();
     }
-
 
     void GetInput()
     {
@@ -64,17 +65,23 @@ public class CatController : MonoBehaviour
         // 根据输入方向翻转人物图片
         catSR.flipX = inputX < 0 ? true : (inputX>0 ? false : catSR.flipX);
         // 根据输入设置人物速度 实现移动
-        catRB.velocity = new Vector2(inputX * moveSpeed, catRB.velocity.y);
+        // 如果是呼唤模式 则不用这个输入的速度
+        if (!pcl.isCalled)
+        {
+            catRB.velocity = new Vector2(inputX * moveSpeed, catRB.velocity.y);
+        }
+        
     }
 
     void GroundRayCast()
     {
         // 从人物脚下发射一条射线 判断是否在地上
-        Vector3 rayOrigin = catCld.bounds.center + new Vector3(0, -catCld.bounds.extents.y, 0);
+        Vector3 rayOrigin = catCld.bounds.center + new Vector3(0, -catCld.bounds.extents.y + 0.1f, 0);
         // 只检测地面图层（Layer 3）
-        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.down, 0.1f, 1<<3);
+        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.down, 1f, 1<<3);
         // hit到，则说明在地上
         isGround = hit.collider;
+        catAnim.SetBool(isGroundStr, isGround);
     }
 
     void CatJump()

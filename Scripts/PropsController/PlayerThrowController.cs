@@ -44,6 +44,8 @@ public class PlayerThrowController : MonoBehaviour
     // 人物相关信息
     public GameObject player;
     private Vector3 playerPos;
+    private Animator playerAnim;
+    private SpriteRenderer playerSR;
     // 猫咪相关信息
     public GameObject cat;
 
@@ -85,6 +87,8 @@ public class PlayerThrowController : MonoBehaviour
 
         // 获取player的位置
         player = GameObject.Find("Player");
+        playerAnim = player.GetComponent<Animator>();
+        playerSR = player.GetComponent<SpriteRenderer>();
         cat = GameObject.Find("Cat");
         fishSR.enabled = false;
         line1.enabled = false;
@@ -104,7 +108,7 @@ public class PlayerThrowController : MonoBehaviour
         {
             fishSR.enabled = true;
             // 让鱼干位置变到人的位置
-            this.transform.position = playerPos;
+            this.transform.position = new Vector3(playerPos.x - 1, playerPos.y + 1, playerPos.z);
         }
 
         // 获取鼠标位置的世界坐标
@@ -113,19 +117,31 @@ public class PlayerThrowController : MonoBehaviour
         mouseScreenPos.z = -Camera.main.transform.position.z; // 摄像机到z=0平面的距离
         mouse_Pos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
 
-        // 检测状态改变
+        // 检测状态改变 持续进行
         switch (state)
         {
+            case STATE.DRAG:
+                // 在这里根据鼠标方向 改变人物的朝向
+                // 鼠标在左边 人朝右边
+                if (mouse_Pos.x < player.transform.position.x)
+                {
+                    playerSR.flipX = false;
+                }
+                else
+                {
+                    playerSR.flipX = true;
+                }
+                break;
             case STATE.RELEASE:
-                // 放手状态中，如果接触到地面且竖直速度为0，则进入落地状态
-                if (rb2D.IsTouchingLayers(groundLayer) && rb2D.velocity.y == 0)
+                // 放手状态中，如果接触到地面且竖直速度比较小了，则进入落地状态
+                if (rb2D.IsTouchingLayers(groundLayer) && rb2D.velocity.y <= 0.5f)
                 {
                     next_state = STATE.LAND;
                 }
                 break;
             case STATE.LAND:
                 // 落地状态中，如果小球静止，则进入静止状态
-                if (rb2D.velocity == Vector2.zero)
+                if (rb2D.velocity.x <= 0.2f && rb2D.velocity.y <= 0.2f)
                 {
                     // 准备开协程 让小猫过去
                     isGround = true;
@@ -148,6 +164,7 @@ public class PlayerThrowController : MonoBehaviour
                     isThrowing = false;
                     isGrabing = false;
                     isGround = false;
+                    playerAnim.SetBool("isGrabing", isGrabing);
                     // 使刚体静止 清除之前的速度
                     rb2D.velocity = Vector2.zero;
                     // 关闭重力影响
@@ -159,7 +176,9 @@ public class PlayerThrowController : MonoBehaviour
                     break;
                 case STATE.GRAB:
                     isThrowing = true;
+                    // 开始抓取 准备动画
                     isGrabing = true;
+                    playerAnim.SetBool("isGrabing", isGrabing);
                     // 获取小球离地高度
                     height = transform.position.y - ground.position.y;
                     // 重新显示抛物线
@@ -173,6 +192,7 @@ public class PlayerThrowController : MonoBehaviour
                     break;
                 case STATE.RELEASE:
                     isGrabing = false;
+                    playerAnim.SetBool("isGrabing", isGrabing);
                     // 设置小球的刚体属性
                     rb2D.drag = 0;          // 线性阻力
                     rb2D.gravityScale = 1;  // 重力影响
@@ -283,7 +303,7 @@ public class PlayerThrowController : MonoBehaviour
         bool isCatMoving;
 
         // 等待1s
-        while(time <= moveTime)
+        while (time <= moveTime)
         {
             time += Time.deltaTime;
             yield return null;
@@ -312,6 +332,9 @@ public class PlayerThrowController : MonoBehaviour
         }
         isCatMoving = false;
         catAnim.SetBool(isMovingStr, isCatMoving);
+        // 猫到达，开始吃鱼
+        // 连接过去用触发器 回来勾选ExitTime=2 吃两次就结束
+        catAnim.SetTrigger("isArrivedAtFish");
     }
 
     //// 按下鼠标，进入抓取状态 OnMouseDown()
