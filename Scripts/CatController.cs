@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class CatController : MonoBehaviour
@@ -23,9 +24,12 @@ public class CatController : MonoBehaviour
     private string isMovingStr = "isMoving";
     private string isGroundStr = "isGround";
 
-    // 4.获取到人物
+    // 4.获取到人物、鱼
     public GameObject player;
+    public GameObject fish;
+    private SpriteRenderer fishSR;
     [SerializeField] private PlayerController pcl;
+    [SerializeField] private PlayerThrowController ptcl;
 
     void Start()
     {
@@ -39,8 +43,10 @@ public class CatController : MonoBehaviour
         // 状态初始化
         isMoving = false;
         isGround = true;
-        // 获取人物
-        player = GameObject.Find("player");
+        // 获取人物、鱼
+        player = GameObject.Find("Player");
+        fish = GameObject.Find("Fish");
+        fishSR = fish.GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -63,14 +69,14 @@ public class CatController : MonoBehaviour
     void CatMove()
     {
         // 根据输入方向翻转人物图片
-        catSR.flipX = inputX < 0 ? true : (inputX>0 ? false : catSR.flipX);
+        catSR.flipX = inputX < 0 ? true : (inputX > 0 ? false : catSR.flipX);
         // 根据输入设置人物速度 实现移动
         // 如果是呼唤模式 则不用这个输入的速度
         if (!pcl.isCalled)
         {
             catRB.velocity = new Vector2(inputX * moveSpeed, catRB.velocity.y);
         }
-        
+
     }
 
     void GroundRayCast()
@@ -78,9 +84,10 @@ public class CatController : MonoBehaviour
         // 从人物脚下发射一条射线 判断是否在地上
         Vector3 rayOrigin = catCld.bounds.center + new Vector3(0, -catCld.bounds.extents.y + 0.1f, 0);
         // 只检测地面图层（Layer 3）
-        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.down, 1f, 1<<3);
+        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.down, 1f, 1 << 3);
         // hit到，则说明在地上
-        isGround = hit.collider;
+        // 另一种方法：通过碰撞体检测地面
+        isGround = catRB.IsTouchingLayers(1 << 3) || hit.collider;
         catAnim.SetBool(isGroundStr, isGround);
     }
 
@@ -91,5 +98,38 @@ public class CatController : MonoBehaviour
         //{
         //    catRB.AddForce(Vector2.up * jumpForce);
         //}
+    }
+
+    // 猫咪吃鱼动画事件 在动画中调用
+    public void CatEatFishAnim() {
+        StartCoroutine(CatEatFishAnimIE());
+    }
+    private IEnumerator CatEatFishAnimIE()
+    {
+        float time = 0f;
+        float totalTime = 4f;
+        float nowAlpha = fishSR.color.a;
+        float alpha = fishSR.color.a;
+        // 4s内 透明度降到0
+        while (time < totalTime)
+        {
+            // 如果在移动或者被呼唤 则停止吃鱼 透明度立刻降到0
+            if(isMoving || pcl.isCalled) 
+            {
+                fishSR.color = new Color(fishSR.color.r, fishSR.color.g, fishSR.color.b, 0);
+                yield break;
+            }
+            // 如果重新扔 立刻再回到满不透明度
+            if(ptcl.isThrowing || ptcl.isGrabing)
+            {
+                fishSR.color = new Color(fishSR.color.r, fishSR.color.g, fishSR.color.b, 1);
+                yield break;
+            }
+            // 按时间线性插值计算透明度
+            nowAlpha = Mathf.Lerp(alpha, 0, time / totalTime);
+            fishSR.color = new Color(fishSR.color.r, fishSR.color.g, fishSR.color.b, nowAlpha);
+            time += Time.deltaTime;
+            yield return null;
+        }
     }
 }

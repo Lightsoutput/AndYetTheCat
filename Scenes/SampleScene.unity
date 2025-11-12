@@ -513,7 +513,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -106.38234, y: 1.0066602, z: -16.88}
+  m_LocalPosition: {x: -104.38234, y: 1.0066602, z: -16.88}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -869,7 +869,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 6
+  m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: e3b0a68069199c549bac4468410737cd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -925,7 +925,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &920014780
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -989,6 +989,8 @@ MonoBehaviour:
   maxForce: 6
   releaseForce: 6
   ground: {fileID: 1950874514}
+  guanghuaBound: {fileID: 6200000, guid: 3af4903d7e315e14da4431197d45f587, type: 2}
+  fishBound: {fileID: 6200000, guid: a7166f49e0fe15d4da9d62a9bd2f0851, type: 2}
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -1144,8 +1146,8 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -44.71234, y: 4.112642}
-      - {x: -44.71234, y: 0.6566602}
+    - - {x: -42.71234, y: 4.112642}
+      - {x: -42.71234, y: 0.6566602}
       - {x: 70.58643, y: 0.6566602}
       - {x: 70.586426, y: 4.112642}
   m_UseDelaunayMesh: 0
@@ -1430,7 +1432,9 @@ MonoBehaviour:
   isGround: 0
   moveSpeed: 0
   player: {fileID: 2047526305}
+  fish: {fileID: 920014775}
   pcl: {fileID: 2047526313}
+  ptcl: {fileID: 920014781}
 --- !u!1 &1159306189
 GameObject:
   m_ObjectHideFlags: 0
@@ -1595,7 +1599,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 6
-  m_Sprite: {fileID: 21300000, guid: b7186042f77938044baf82fb9fe15620, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4013b0a4dc2c0374987efbf5ce4d4db4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1615,7 +1619,7 @@ Transform:
   m_GameObject: {fileID: 1331552400}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 23.8, y: 4.21, z: -0.04163282}
+  m_LocalPosition: {x: 22.49, y: 6.72, z: -0.04163282}
   m_LocalScale: {x: 0.45940617, y: 0.45940617, z: 0.45940617}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1630,8 +1634,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1502518773}
+  - component: {fileID: 1502518775}
+  - component: {fileID: 1502518774}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: WindDetectWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1646,12 +1652,72 @@ Transform:
   m_GameObject: {fileID: 1502518772}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -92.78835, y: -1.5595767, z: -0.090736724}
+  m_LocalPosition: {x: 6.25, y: -3.35, z: -0.090736724}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1502518774
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1502518772}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 6200000, guid: 3af4903d7e315e14da4431197d45f587, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 9.276036}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 19.302141}
+  m_EdgeRadius: 0
+--- !u!114 &1502518775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1502518772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de840433a205a754b92c0e7bf77557a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 2047526305}
+  cat: {fileID: 1151083176}
+  bird: {fileID: 1331552400}
 --- !u!1 &1690434347
 GameObject:
   m_ObjectHideFlags: 0
@@ -1662,7 +1728,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1690434348}
   - component: {fileID: 1690434349}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Shizhu_Cld1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1693,7 +1759,7 @@ PolygonCollider2D:
   m_GameObject: {fileID: 1690434347}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: 3af4903d7e315e14da4431197d45f587, type: 2}
+  m_Material: {fileID: 6200000, guid: 67887928462afc74687f315033bd93b9, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1744,7 +1810,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1746262412}
   - component: {fileID: 1746262413}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Shizhu_Cld2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1775,7 +1841,7 @@ PolygonCollider2D:
   m_GameObject: {fileID: 1746262411}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: 3af4903d7e315e14da4431197d45f587, type: 2}
+  m_Material: {fileID: 6200000, guid: 67887928462afc74687f315033bd93b9, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -2136,29 +2202,32 @@ EdgeCollider2D:
   - {x: -41.165928, y: -8.309583}
   - {x: -38.07712, y: -8.35913}
   - {x: -36.17651, y: -8.343742}
-  - {x: -35.635975, y: -8.35651}
+  - {x: -35.590557, y: -8.311087}
   - {x: -35.0837, y: -8.248098}
-  - {x: -33.36838, y: -8.3071575}
-  - {x: -32.695774, y: -8.10422}
-  - {x: -32.36205, y: -7.9466157}
-  - {x: -31.521679, y: -7.122773}
-  - {x: -31.192493, y: -6.6951957}
-  - {x: -30.850803, y: -6.4273334}
-  - {x: -30.170208, y: -6.077554}
-  - {x: -29.877575, y: -5.893743}
+  - {x: -33.2643, y: -7.866515}
+  - {x: -32.622242, y: -7.6011953}
+  - {x: -32.40617, y: -7.4319177}
+  - {x: -31.698147, y: -6.8433657}
+  - {x: -31.207203, y: -6.548139}
+  - {x: -30.909626, y: -6.368511}
+  - {x: -30.498112, y: -6.1284275}
+  - {x: -30.155499, y: -5.9599085}
+  - {x: -29.892277, y: -5.849626}
   - {x: -29.367382, y: -5.6254215}
-  - {x: -28.074993, y: -5.252615}
+  - {x: -28.084583, y: -5.290993}
   - {x: -27.206074, y: -5.261729}
-  - {x: -26.18089, y: -5.2548604}
+  - {x: -26.204876, y: -5.351748}
   - {x: -25.643047, y: -5.490856}
-  - {x: -25.028622, y: -5.6967187}
-  - {x: -24.150234, y: -6.3231597}
-  - {x: -22.99181, y: -6.8394327}
-  - {x: -22.525997, y: -6.9213667}
-  - {x: -21.652386, y: -7.085969}
-  - {x: -20.422375, y: -7.0708895}
+  - {x: -25.087444, y: -5.6967187}
+  - {x: -24.533619, y: -5.9882636}
+  - {x: -24.003178, y: -6.352571}
+  - {x: -23.470211, y: -6.573743}
+  - {x: -22.75652, y: -6.7806106}
+  - {x: -22.452465, y: -6.8184276}
+  - {x: -21.608265, y: -6.938912}
+  - {x: -20.451794, y: -6.96795}
   - {x: -20.007557, y: -6.974509}
-  - {x: -19.12405, y: -6.9796815}
+  - {x: -19.12405, y: -7.0679154}
   - {x: -18.553905, y: -7.0904055}
   - {x: -18.257938, y: -7.1341476}
   - {x: -17.772297, y: -7.14097}
@@ -2340,7 +2409,7 @@ GameObject:
   - component: {fileID: 1955088452}
   - component: {fileID: 1955088454}
   - component: {fileID: 1955088455}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: ZhongliShiban
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2862,7 +2931,7 @@ GameObject:
   - component: {fileID: 2056843329}
   - component: {fileID: 2056843330}
   - component: {fileID: 2056843331}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Shizhu
   m_TagString: Untagged
   m_Icon: {fileID: 0}

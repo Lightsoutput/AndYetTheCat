@@ -103,11 +103,13 @@ public class PlayerController : MonoBehaviour
         Vector3 rayOriginRight = playerCld.bounds.center + new Vector3(playerCld.bounds.extents.x, -playerCld.bounds.extents.y, 0);
 
         // 只检测地面图层（Layer 3）
-        RaycastHit2D hitL = Physics2D.Raycast(rayOriginLeft, Vector2.down, 0.1f, 1 << 3);
-        RaycastHit2D hitR = Physics2D.Raycast(rayOriginRight, Vector2.down, 0.1f, 1 << 3);
+        RaycastHit2D hitL = Physics2D.Raycast(rayOriginLeft, Vector2.down, 0.2f, 1 << 3);
+        RaycastHit2D hitR = Physics2D.Raycast(rayOriginRight, Vector2.down, 0.2f, 1 << 3);
+        // 或者 直接用Collider2D.IsTouchingLayers 检测地面也可以
+        bool colliderGround = playerCld.IsTouchingLayers(1 << 3);
 
         // hit到，则说明在地上
-        isGround = hitL.collider || hitR.collider;
+        isGround = hitL.collider || hitR.collider || colliderGround;
         isJumping = !isGround;
         // 设置isGround为true
         playerAnim.SetBool(isGroundStr, isGround);

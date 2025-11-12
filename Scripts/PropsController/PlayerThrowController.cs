@@ -30,14 +30,17 @@ public class PlayerThrowController : MonoBehaviour
     float height;
     float xUnit = .1f;
 
+    // 碰撞组件
+    BoxCollider2D fishCld;
+    public PhysicsMaterial2D guanghuaBound;
+    public PhysicsMaterial2D fishBound;
+
     // 地面图层掩码
     public LayerMask groundLayer;
     // 力度拖拽示意点物体对象
     public GameObject dragPoint;
-
     // 图片渲染组件
     SpriteRenderer fishSR;
-
     // 轨迹线的起点颜色
     Vector4 fadeLine = new Vector4(1, 1, 1, 1);
 
@@ -83,6 +86,7 @@ public class PlayerThrowController : MonoBehaviour
 
         // 获取刚体、图片组件
         rb2D = GetComponent<Rigidbody2D>();
+        fishCld = GetComponent<BoxCollider2D>();
         fishSR = GetComponent<SpriteRenderer>();
 
         // 获取player的位置
@@ -104,13 +108,6 @@ public class PlayerThrowController : MonoBehaviour
         // 调用监听开始扔鱼干按钮的方法
         ThrowFishListener();
 
-        if (isGrabing)
-        {
-            fishSR.enabled = true;
-            // 让鱼干位置变到人的位置
-            this.transform.position = new Vector3(playerPos.x - 1, playerPos.y + 1, playerPos.z);
-        }
-
         // 获取鼠标位置的世界坐标
         // 注：这里本来获得的世界坐标，如果不改是不动的，必须和screen的（这个才是变化的）鼠标坐标有个投影
         Vector3 mouseScreenPos = Input.mousePosition;
@@ -122,14 +119,17 @@ public class PlayerThrowController : MonoBehaviour
         {
             case STATE.DRAG:
                 // 在这里根据鼠标方向 改变人物的朝向
-                // 鼠标在左边 人朝右边
+                // 鼠标在左边 人朝右边 鱼也在左边
                 if (mouse_Pos.x < player.transform.position.x)
                 {
                     playerSR.flipX = false;
+                    this.transform.position = new Vector3(playerPos.x - 1, playerPos.y + 1, playerPos.z);
                 }
+                // 鼠标在右边 人朝左边 鱼也在右边
                 else
                 {
                     playerSR.flipX = true;
+                    this.transform.position = new Vector3(playerPos.x + 1, playerPos.y + 1, playerPos.z);
                 }
                 break;
             case STATE.RELEASE:
@@ -154,6 +154,8 @@ public class PlayerThrowController : MonoBehaviour
         // 状态初始化（有状态改变才执行一次）
         if (next_state != STATE.NONE)
         {
+            // 打印当前和下一个状态
+            // Debug.Log("当前" + state.ToString() + "，下一个状态" + next_state.ToString());
             state = next_state;
             next_state = STATE.NONE;
 
@@ -169,7 +171,6 @@ public class PlayerThrowController : MonoBehaviour
                     rb2D.velocity = Vector2.zero;
                     // 关闭重力影响
                     rb2D.gravityScale = 0;
-                    fishSR.enabled = true;
                     line1.enabled = false;
                     line2.enabled = false;
                     dragPoint.SetActive(false);
@@ -181,6 +182,10 @@ public class PlayerThrowController : MonoBehaviour
                     playerAnim.SetBool("isGrabing", isGrabing);
                     // 获取小球离地高度
                     height = transform.position.y - ground.position.y;
+                    // 重新显示小鱼图片，设置透明度为1（不透明）
+                    fishSR.enabled = true;
+                    fishSR.color = new Color(fishSR.color.r, fishSR.color.g,
+                                            fishSR.color.b, 1);
                     // 重新显示抛物线
                     line1.enabled = true;
                     line1.startColor = new Vector4(1, 1, 1, 1);
@@ -197,14 +202,25 @@ public class PlayerThrowController : MonoBehaviour
                     rb2D.drag = 0;          // 线性阻力
                     rb2D.gravityScale = 1;  // 重力影响
                     rb2D.velocity = release_Velocity; // 初速度
+                    fishCld.sharedMaterial = guanghuaBound; // 扔出时换成光滑材质
                     // 隐藏力度线
                     line2.enabled = false;
                     dragPoint.SetActive(false);
                     break;
                 case STATE.LAND:
                     // 对小球附加额外阻力，使其可以停下
-                    rb2D.drag = 0.8f;
+                    // 落地时更换材质为原有摩擦材质
+                    fishCld.sharedMaterial = fishBound;
+                    rb2D.drag = 1.8f;
                     break;
+            }
+
+            // 这里得放在状态改变后来判断 否则会覆盖下面的初始化状态
+            if (isGrabing)
+            {
+                fishSR.enabled = true;
+                // 让鱼干位置变到人的位置
+                this.transform.position = new Vector3(playerPos.x - 1, playerPos.y + 1, playerPos.z);
             }
         }
 
@@ -285,6 +301,8 @@ public class PlayerThrowController : MonoBehaviour
             }
             else if(state == STATE.GRAB || state == STATE.DRAG)
             {
+                // 重新隐藏鱼
+                fishSR.enabled = false;
                 next_state = STATE.IDLE;
             }
         }
