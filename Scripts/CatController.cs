@@ -23,6 +23,8 @@ public class CatController : MonoBehaviour
     // 3.动画参数字符串
     private string isMovingStr = "isMoving";
     private string isGroundStr = "isGround";
+    private string isCalledStr = "isCalled";
+    public bool isCalled;
 
     // 4.获取到人物、鱼
     public GameObject player;
@@ -54,7 +56,6 @@ public class CatController : MonoBehaviour
         GetInput();
         CatMove();
         GroundRayCast();
-        CatJump();
     }
 
     void GetInput()
@@ -72,14 +73,13 @@ public class CatController : MonoBehaviour
         catSR.flipX = inputX < 0 ? true : (inputX > 0 ? false : catSR.flipX);
         // 根据输入设置人物速度 实现移动
         // 如果是呼唤模式 则不用这个输入的速度
-        if (!pcl.isCalled)
+        if (!isCalled)
         {
             catRB.velocity = new Vector2(inputX * moveSpeed, catRB.velocity.y);
         }
-
     }
 
-    void GroundRayCast()
+    private void GroundRayCast()
     {
         // 从人物脚下发射一条射线 判断是否在地上
         Vector3 rayOrigin = catCld.bounds.center + new Vector3(0, -catCld.bounds.extents.y + 0.1f, 0);
@@ -91,13 +91,34 @@ public class CatController : MonoBehaviour
         catAnim.SetBool(isGroundStr, isGround);
     }
 
-    void CatJump()
+    // 人物呼唤时 猫咪跳跃 这里作为动画事件调用函数
+    public void CatJump()
     {
-        //// W按钮 跳跃
-        //if (Input.GetKeyDown(KeyCode.W) && isGround)
-        //{
-        //    catRB.AddForce(Vector2.up * jumpForce);
-        //}
+        // 开始呼唤 这时开始不适用输入的水平速度
+        isCalled = true;
+        // 斜向上加一个力
+        float rightForce = pcl.isCatAtLeft ? 15f : -15f; // 注意水平力的朝向 让猫咪往人跳
+        float upForce = 25f;
+        Vector2 jumpForce = new Vector2(rightForce, upForce);
+        catRB.AddForce(jumpForce, ForceMode2D.Impulse);
+        Debug.Log("catRB velocity: " + catRB.velocity);
+
+        // 协程异步执行 解决跳跃动画播放问题
+        StartCoroutine(ProcessCalling());
+    }
+
+    // 协程 处理猫跳跃的状态
+    IEnumerator ProcessCalling()
+    {
+        // 等待几秒 防止一开始错误错判断
+        yield return new WaitForSeconds(0.1f);
+        while (!isGround)
+        {
+            yield return null;
+        }
+        // 等待猫咪落地后，再关闭猫咪跳跃动画状态
+        isCalled = false;
+        catAnim.SetBool(isCalledStr, isCalled);
     }
 
     // 猫咪吃鱼动画事件 在动画中调用
@@ -114,7 +135,7 @@ public class CatController : MonoBehaviour
         while (time < totalTime)
         {
             // 如果在移动或者被呼唤 则停止吃鱼 透明度立刻降到0
-            if(isMoving || pcl.isCalled) 
+            if(isMoving || isCalled) 
             {
                 fishSR.color = new Color(fishSR.color.r, fishSR.color.g, fishSR.color.b, 0);
                 yield break;

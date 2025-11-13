@@ -401,16 +401,16 @@ AnimatorStateMachine:
   m_EntryTransitions:
   - {fileID: 3521669810988997073}
   m_StateMachineTransitions:
-  - first: {fileID: 504363044768322459}
-    second:
-    - {fileID: 6256858712755572072}
-  - first: {fileID: -4888877305918937491}
-    second:
-    - {fileID: 4731843318934812916}
   - first: {fileID: -6388009713287824302}
     second:
     - {fileID: -5409394322846807347}
     - {fileID: 8919012566352097897}
+  - first: {fileID: -4888877305918937491}
+    second:
+    - {fileID: 4731843318934812916}
+  - first: {fileID: 504363044768322459}
+    second:
+    - {fileID: 6256858712755572072}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
   m_EntryPosition: {x: -80, y: 360, z: 0}
@@ -572,12 +572,6 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: isCalling
-    m_Type: 4
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
   - m_Name: isGrabing
     m_Type: 4
     m_DefaultFloat: 0
@@ -586,6 +580,12 @@ AnimatorController:
     m_Controller: {fileID: 9100000}
   - m_Name: isWinded
     m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
+  - m_Name: isCalling
+    m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
@@ -610,10 +610,7 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions:
-  - m_ConditionMode: 2
-    m_ConditionEvent: isCalling
-    m_EventTreshold: 0
+  m_Conditions: []
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 8306689530701020849}
   m_Solo: 0
@@ -622,8 +619,8 @@ AnimatorStateTransition:
   serializedVersion: 3
   m_TransitionDuration: 0
   m_TransitionOffset: 0
-  m_ExitTime: 0.75
-  m_HasExitTime: 0
+  m_ExitTime: 1
+  m_HasExitTime: 1
   m_HasFixedDuration: 0
   m_InterruptionSource: 2
   m_OrderedInterruption: 1
