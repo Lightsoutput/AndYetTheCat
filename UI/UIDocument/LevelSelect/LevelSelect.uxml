@@ -1,4 +1,20 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/LevelSelectButton.uss?fileID=7433441132597879392&amp;guid=cbf122ffdf070694eb03e3e91bb7bed9&amp;type=3#LevelSelectButton" />
     <ui:VisualElement name="BackGround" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/UI/UIDocument/LevelSelect/SELECT_BG1.png?fileID=21300000&amp;guid=8540a7970d22ca74da4e72b14c6209f4&amp;type=3#SELECT_BG1&quot;);" />
-    <ui:VisualElement name="Level1Container" style="flex-grow: 1; position: absolute;" />
+    <ui:VisualElement name="LevelContainer" style="flex-grow: 1; position: absolute; width: 27%; height: 76%; left: 6%; top: 10%;">
+        <ui:VisualElement name="Border1" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/UI/UIDocument/LevelSelect/CHAP1_BACKGROUND.png?fileID=21300000&amp;guid=06aae402600ec4f45be2b6aaf3339dee&amp;type=3#CHAP1_BACKGROUND&quot;);" />
+        <ui:VisualElement name="Picture1" style="flex-grow: 1; position: absolute; width: 100%; height: 100%; background-image: none;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="LevelContainer" style="flex-grow: 1; position: absolute; width: 25%; height: 76%; left: 36%; top: 8%;">
+        <ui:VisualElement name="Border" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/UI/UIDocument/LevelSelect/CHP2_KUANG.png?fileID=21300000&amp;guid=36bd8c7ecdac61c46976e5faf5e14df0&amp;type=3#CHP2_KUANG&quot;); height: 50%;" />
+        <ui:VisualElement name="Picture2" style="flex-grow: 1; position: absolute; width: 100%; height: 100%; background-image: none;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="LevelContainer" style="flex-grow: 1; position: absolute; width: 25%; height: 80%; left: auto; top: 8%; right: 6%;">
+        <ui:VisualElement name="Border" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/UI/UIDocument/LevelSelect/CHP3_KUANG.png?fileID=21300000&amp;guid=255c5bd3e8eeb384b9afc347d181c5d2&amp;type=3#CHP3_KUANG&quot;);" />
+        <ui:VisualElement name="Picture3" style="flex-grow: 1; position: absolute; width: 100%; height: 100%; background-image: none;" />
+    </ui:VisualElement>
+    <ui:Label tabindex="-1" text="Chapter 1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Level1" style="position: absolute; width: 25%; height: 10%; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; left: 6.5%; bottom: 6%;" />
+    <ui:Label tabindex="-1" text="Chapter 2" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Level2" style="position: absolute; width: 25%; height: 10%; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; left: 37%; bottom: 6%;" />
+    <ui:Label tabindex="-1" text="Chapter 3" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Level3" style="position: absolute; width: 25%; height: 10%; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; left: auto; bottom: 6%; right: 6.5%;" />
+    <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="BackBtn" style="border-left-color: rgba(56, 56, 56, 0); border-right-color: rgba(56, 56, 56, 0); border-top-color: rgba(56, 56, 56, 0); border-bottom-color: rgba(56, 56, 56, 0); background-color: rgba(255, 255, 255, 0); background-image: url(&quot;project://database/Assets/UI/UIDocument/LevelSelect/btn_back.png?fileID=21300000&amp;guid=9852aa422e7e4ea4594e79bfa362fe36&amp;type=3#btn_back&quot;); flex-grow: 1;" />
 </ui:UXML>

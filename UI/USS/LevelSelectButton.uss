@@ -1,0 +1,68 @@
+#BackBtn {
+    rotate: 0;
+    transition-property: rotate;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-out-elastic;
+    width: 6%;
+    height: 10.67%;
+    position: absolute;
+    top: 1%;
+    right: 1.2%;
+}
+
+#BackBtn:hover {
+    width: 7%;
+    height: 12.4%;
+    rotate: 20deg;
+    transition-property: rotate;
+    transition-duration: 1s;
+    transition-timing-function: ease-out-elastic;
+    transition-delay: 0s;
+    left: auto;
+    right: 0.5%;
+    top: 1.2%;
+}
+
+Label {
+    font-size: 350%;
+    color: rgb(255, 255, 255);
+    -unity-font-definition: url("project://database/Assets/Fonts/Belgant%20Aesthetic%20SDF%201.asset?fileID=11400000&guid=f987f8b843189284486127cc5e5c317b&type=2#Belgant Aesthetic SDF 1");
+    -unity-text-align: middle-center;
+}
+
+#LevelContainer {
+    transition-property: padding;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-out-circ;
+}
+
+#LevelContainer:hover {
+    rotate: 0;
+    width: auto;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left-color: rgba(16, 24, 71, 0);
+    border-right-color: rgba(16, 24, 71, 0);
+    border-top-color: rgba(16, 24, 71, 0);
+    border-bottom-color: rgba(16, 24, 71, 0);
+    transition-property: padding;
+    transition-duration: 1s;
+    transition-timing-function: ease-out-circ;
+    transition-delay: 0s;
+    background-color: rgba(0, 0, 0, 0);
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+}
