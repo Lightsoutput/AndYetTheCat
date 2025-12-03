@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
         playerAnim = player.GetComponent<Animator>();
         // 速度、跳跃力度、长按跳跃时间初始化
         moveSpeed = 5f;
-        jumpForce = 7.5f;
+        jumpForce = 10f;
         jumpTimeHold = 0.2f;
 
         // 状态初始化
