@@ -15,7 +15,8 @@ https://github.com/user-attachments/assets/5c27c3e2-0b17-4c8d-ba76-1766ac2aeafe
 特别感谢 @小瑾 等人提供视频、美术资源与UI原型制作
 
 背景设定
-https://github.com/user-attachments/assets/0cc38737-82b8-439f-b23f-432226d15999
+
+https://github.com/user-attachments/assets/c685095c-c674-48d4-9072-14e36654b6ff
 
 游戏主页面
 <img width="5280" height="2970" alt="主界面(1)" src="https://github.com/user-attachments/assets/eec0ed30-f015-408c-a43f-ad842a5c03a5" />
